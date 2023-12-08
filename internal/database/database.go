@@ -19,16 +19,16 @@ var (
 )
 
 func InitDB() (*gorm.DB, error) {
-	appPort := os.Getenv("APP_PSQ_DSN")
-	if appPort == "" {
-		appPort = "host=localhost user=wetao_db password=REWQ_7AD83439wEqwR dbname=wetao_db port=5477 sslmode=disable TimeZone=Europe/Moscow"
+	appDsn := os.Getenv("APP_PSQ_DSN")
+	if appDsn == "" {
+		appDsn = "host=localhost user=wetao_db password=REWQ_7AD83439wEqwR dbname=wetao_db port=5477 sslmode=disable TimeZone=Europe/Moscow"
 	}
 
 	//dsn := ""
 	var err error
 
 	dbOnce.Do(func() {
-		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		db, err := gorm.Open(postgres.Open(appDsn), &gorm.Config{
 			QueryFields: true,
 			PrepareStmt: true,
 			//DryRun:      true,
