@@ -4,6 +4,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
+	"os"
 	"sync"
 )
 
@@ -18,7 +19,12 @@ var (
 )
 
 func InitDB() (*gorm.DB, error) {
-	dsn := "host=localhost user=wetao_db password=REWQ_7AD83439wEqwR dbname=wetao_db port=5477 sslmode=disable TimeZone=Europe/Moscow"
+	appPort := os.Getenv("APP_PSQ_DSN")
+	if appPort == "" {
+		appPort = "host=localhost user=wetao_db password=REWQ_7AD83439wEqwR dbname=wetao_db port=5477 sslmode=disable TimeZone=Europe/Moscow"
+	}
+
+	//dsn := ""
 	var err error
 
 	dbOnce.Do(func() {
