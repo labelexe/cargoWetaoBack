@@ -5,12 +5,13 @@ import (
 	"Wetao/internal/database"
 	"Wetao/pkg"
 	"github.com/rs/zerolog/log"
+	"os"
 )
 
 func main() {
-	pkg.LoggerInit()
 	//Env
 	pkg.EnvLoadInit()
+	pkg.LoggerInit()
 	//WebApp
 	app := bootstrap.HttpAppServer()
 	bootstrap.HttpServiceProvider(app)
@@ -18,6 +19,14 @@ func main() {
 	if err != nil {
 		log.Print(err)
 	}
+
+	appHost := os.Getenv("APP_HOST")
+	appPort := os.Getenv("APP_PORT")
+	if appPort == "" {
+		appPort = "9761"
+	}
+	//
+	appAddress := appHost + ":" + appPort
 	//Listen
-	log.Err(app.Listen(":9761"))
+	log.Err(app.Listen(appAddress))
 }
